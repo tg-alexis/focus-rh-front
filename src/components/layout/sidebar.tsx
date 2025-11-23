@@ -13,9 +13,11 @@ import {
 	HelpCircle,
 	LayoutDashboard,
 	LogOut,
+	Palette,
 	Settings,
 	Sparkles,
 	Trophy,
+	UserCircle,
 	Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -73,6 +75,18 @@ const menuItems: MenuItem[] = [
 				label: "Développement Personnel",
 				icon: Users,
 				href: "/pillars/personal-growth",
+			},
+			{
+				id: "relationships",
+				label: "Relations Interpersonnelles",
+				icon: UserCircle,
+				href: "/pillars/relationships",
+			},
+			{
+				id: "creativity",
+				label: "Créativité",
+				icon: Palette,
+				href: "/pillars/creativity",
 			},
 		],
 	},

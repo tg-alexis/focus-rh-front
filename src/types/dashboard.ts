@@ -77,3 +77,33 @@ export type PillarType =
 	| 'personal-growth'
 	| 'relationships'
 	| 'creativity';
+
+export interface PillarTask {
+	id: string;
+	day: number;
+	week: number;
+	pillarId: string;
+	title: string;
+	description: string;
+	completed: boolean;
+	locked: boolean;
+	completedAt?: Date;
+	duration?: number; // minutes
+	steps?: string[];
+	points?: number;
+}
+
+export interface PillarResource {
+	title: string;
+	description: string;
+	icon: string;
+	link?: string;
+}
+
+export interface PillarDetail extends Pillar {
+	gradient: string; // Classe CSS pour le gradient
+	tasks: PillarTask[];
+	resources: PillarResource[];
+	tips: string[];
+	pointsEarned?: number;
+}
