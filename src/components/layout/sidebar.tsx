@@ -5,20 +5,14 @@ import { cn } from "@/lib/utils";
 import {
 	BarChart3,
 	BookOpen,
-	Brain,
 	Calendar,
 	ChevronLeft,
 	ChevronRight,
-	Heart,
 	HelpCircle,
 	LayoutDashboard,
 	LogOut,
-	Palette,
 	Settings,
-	Sparkles,
 	Trophy,
-	UserCircle,
-	Users,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -51,44 +45,44 @@ const menuItems: MenuItem[] = [
 		label: "Piliers",
 		icon: BookOpen,
 		href: "/pillars",
-		children: [
-			{
-				id: "mental-health",
-				label: "Santé Mentale",
-				icon: Brain,
-				href: "/pillars/mental-health",
-			},
-			{
-				id: "work-life",
-				label: "Équilibre Vie Pro-Perso",
-				icon: Heart,
-				href: "/pillars/work-life-balance",
-			},
-			{
-				id: "physical",
-				label: "Bien-être Physique",
-				icon: Sparkles,
-				href: "/pillars/physical-wellness",
-			},
-			{
-				id: "growth",
-				label: "Développement Personnel",
-				icon: Users,
-				href: "/pillars/personal-growth",
-			},
-			{
-				id: "relationships",
-				label: "Relations Interpersonnelles",
-				icon: UserCircle,
-				href: "/pillars/relationships",
-			},
-			{
-				id: "creativity",
-				label: "Créativité",
-				icon: Palette,
-				href: "/pillars/creativity",
-			},
-		],
+		// children: [
+		// 	{
+		// 		id: "mental-health",
+		// 		label: "Santé Mentale",
+		// 		icon: Brain,
+		// 		href: "/pillars/mental-health",
+		// 	},
+		// 	{
+		// 		id: "work-life",
+		// 		label: "Équilibre Vie Pro-Perso",
+		// 		icon: Heart,
+		// 		href: "/pillars/work-life-balance",
+		// 	},
+		// 	{
+		// 		id: "physical",
+		// 		label: "Bien-être Physique",
+		// 		icon: Sparkles,
+		// 		href: "/pillars/physical-wellness",
+		// 	},
+		// 	{
+		// 		id: "growth",
+		// 		label: "Développement Personnel",
+		// 		icon: Users,
+		// 		href: "/pillars/personal-growth",
+		// 	},
+		// 	{
+		// 		id: "relationships",
+		// 		label: "Relations Interpersonnelles",
+		// 		icon: UserCircle,
+		// 		href: "/pillars/relationships",
+		// 	},
+		// 	{
+		// 		id: "creativity",
+		// 		label: "Créativité",
+		// 		icon: Palette,
+		// 		href: "/pillars/creativity",
+		// 	},
+		// ],
 	},
 	{
 		id: "progress",

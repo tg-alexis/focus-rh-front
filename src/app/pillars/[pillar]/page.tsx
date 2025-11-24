@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,13 +14,26 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface PillarPageProps {
-	params: {
+	params: Promise<{
 		pillar: string;
-	};
+	}>;
 }
 
-export default function PillarPage({ params }: PillarPageProps) {
-	const pillarDetails = getPillarDetails(params.pillar);
+// Generate static params for all pillar pages
+export async function generateStaticParams() {
+	return [
+		{ pillar: "mental-health" },
+		{ pillar: "work-life-balance" },
+		{ pillar: "physical-wellness" },
+		{ pillar: "personal-growth" },
+		{ pillar: "relationships" },
+		{ pillar: "creativity" },
+	];
+}
+
+export default async function PillarPage({ params }: PillarPageProps) {
+	const { pillar } = await params;
+	const pillarDetails = getPillarDetails(pillar);
 
 	if (!pillarDetails) {
 		notFound();
