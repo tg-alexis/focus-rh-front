@@ -1,4 +1,4 @@
-FROM node:24.11.1-alpine3.21 as build
+FROM node:24.11.1-alpine3.21 AS build
 
 # Utiliser l'utilisateur root pour éviter les problèmes de permissions pendant la construction
 USER root
