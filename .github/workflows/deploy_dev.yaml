@@ -35,6 +35,9 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-
 
+            - name: Configure pnpm store
+              run: pnpm config set store-dir ~/.local/share/pnpm/store/v3
+
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
