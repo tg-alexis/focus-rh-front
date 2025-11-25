@@ -51,14 +51,14 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.node-version }}
+
             - uses: pnpm/action-setup@v4
               with:
                   version: 9
                   run_install: false
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.node-version }}
 
             - name: Setup pnpm cache
               uses: actions/cache@v4
@@ -92,15 +92,14 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 9
-                  run_install: false
-
             - uses: actions/setup-node@v4
               with:
                   node-version: ${{ env.node-version }}
 
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
             - name: Setup pnpm cache
               uses: actions/cache@v4
               id: pnpm-cache
@@ -110,8 +109,11 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-
 
+            - name: Configure pnpm store
+              run: pnpm config set store-dir ~/.local/share/pnpm/store/v3
+
             - name: Install dependencies
-              run: pnpm install --ignore-scripts
+              run: pnpm install --frozen-lockfile
 
             - name: Looking for vulnerabilities
               run: pnpm audit
