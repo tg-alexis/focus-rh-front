@@ -1,4 +1,4 @@
-FROM node:24.10.1-alpine as build
+FROM node:24.11.1-alpine3.21 as build
 
 # Utiliser l'utilisateur root pour éviter les problèmes de permissions pendant la construction
 USER root
@@ -14,7 +14,7 @@ RUN pnpm install --no-frozen-lockfile
 COPY . .
 RUN pnpm build
 
-FROM node:24.10.1-alpine
+FROM node:24.11.1-alpine3.21
 
 # Utiliser l'utilisateur root pour éviter les problèmes de permissions pendant la copie
 USER root
