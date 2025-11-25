@@ -1,39 +1,38 @@
-FROM node:24.11.1-alpine3.21 AS build
+# ====== BUILD STAGE ======
+FROM node:22-alpine AS build
 
-# Utiliser l'utilisateur root pour éviter les problèmes de permissions pendant la construction
-USER root
-WORKDIR /home/node
-
-COPY package.json package.json
-COPY pnpm-lock.yaml pnpm-lock.yaml
-
+# Installer pnpm global
 RUN npm install -g pnpm
-#RUN pnpm install --frozen-lockfile
-RUN pnpm install --no-frozen-lockfile
 
+WORKDIR /app
+
+# Copier uniquement les fichiers nécessaires au cache
+COPY package.json pnpm-lock.yaml ./
+
+# Installer dépendances en mode reproductible
+RUN pnpm install --frozen-lockfile
+
+# Copier tout le reste du code
 COPY . .
+
+# Build Next.js en standalone
 RUN pnpm build
 
-FROM node:24.11.1-alpine3.21
-
-# Utiliser l'utilisateur root pour éviter les problèmes de permissions pendant la copie
-USER root
-WORKDIR /home/node
+FROM node:22-alpine AS runner
 
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --chown=node:node --from=build /home/node/.next/standalone /app
-COPY --chown=node:node --from=build /home/node/.next/static /app/.next/static
-COPY --chown=node:node --from=build /home/node/public /app/public
-RUN ls -la
+# Copier uniquement le standalone + static + public
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/public ./public
 
-# Exécuter le conteneur en tant qu'utilisateur node
-USER node
-
-ENV HOST=127.0.0.1
-ENV NODE_ENV="production"
 EXPOSE 3000
 
-CMD [ "node", "server.js" ]
+# Bonne pratique recommandée par Next.js
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
+CMD ["node", "server.js"]
