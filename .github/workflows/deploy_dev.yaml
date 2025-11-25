@@ -1,0 +1,131 @@
+name: Deploy to development server
+
+on:
+    push:
+        branches: [develop]
+
+env:
+    node-version: "24.10.1"
+    cache-name: pnpm-cache
+    app-name: focus-rh-front
+
+jobs:
+    lint:
+        name: Conformity checks
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            # Install Node + pnpm
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.node-version }}
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
+
+            # Cache pnpm store
+            - name: Setup pnpm cache
+              uses: actions/cache@v4
+              id: pnpm-cache
+              with:
+                  path: ~/.local/share/pnpm/store/v3
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            # - name: Lint
+            #   run: pnpm run lint
+
+    build:
+        name: Build and push
+        runs-on: ubuntu-latest
+        needs: lint
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.node-version }}
+
+            - name: Setup pnpm cache
+              uses: actions/cache@v4
+              id: pnpm-cache
+              with:
+                  path: ~/.local/share/pnpm/store/v3
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Building docker image
+              run: |
+                  echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+                  echo '${{ secrets.DEV_ENV }}' > .env
+                  docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.app-name }}:${GITHUB_SHA::7} \
+                    -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.app-name }}:latest .
+                  docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.app-name }}:${GITHUB_SHA::7}
+                  docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.app-name }}:latest
+
+    vulnerability-check:
+        name: PNPM Vulnerability Check
+        needs: lint
+        runs-on: ubuntu-latest
+        continue-on-error: true
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.node-version }}
+
+            - name: Setup pnpm cache
+              uses: actions/cache@v4
+              id: pnpm-cache
+              with:
+                  path: ~/.local/share/pnpm/store/v3
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
+
+            - name: Install dependencies
+              run: pnpm install --ignore-scripts
+
+            - name: Looking for vulnerabilities
+              run: pnpm audit
+
+    deploy:
+        runs-on: ubuntu-latest
+        name: Deploy
+        needs: build
+        env:
+            target: ${{ secrets.DEV_USER }}@${{ secrets.DEV_SERVER }}:/tmp
+        steps:
+            - uses: actions/checkout@v4
+            - name: Deploying
+              run: |
+                  echo "${{ secrets.DEV_PRIVATE_KEY }}" > private_key.pem
+                  echo "${{ secrets.DEV_ENV }}" > .env
+                  chmod 400 private_key.pem
+                  scp -P ${{ secrets.DEV_SSH_PORT }} -i private_key.pem -o StrictHostKeyChecking=no scripts/deploy.sh ${{ env.target }}/deploy_${{ env.app-name }}.sh
+                  scp -P ${{ secrets.DEV_SSH_PORT }} -i private_key.pem -o StrictHostKeyChecking=no .env ${{ env.target }}/.env.${{ env.app-name }}
+                  ssh -p ${{ secrets.DEV_SSH_PORT }} -i private_key.pem -o StrictHostKeyChecking=no ${{ secrets.DEV_USER }}@${{ secrets.DEV_SERVER }} <<EOF
+                    sh /tmp/deploy_${{ env.app-name }}.sh ${{ env.app-name }} "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.app-name }}:latest" ${{ secrets.PORT }}
+                    rm -rf ${{ env.target }}/.env.${{ env.app-name }}
+                  EOF
