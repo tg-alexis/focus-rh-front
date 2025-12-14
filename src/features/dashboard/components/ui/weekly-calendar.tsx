@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils/utils";
-import { WeekProgress } from "@/src/types/dashboard";
+import { WeekProgress } from "@/types/dashboard";
 import { Calendar, Check, Lock } from "lucide-react";
 
 interface WeeklyCalendarProps {

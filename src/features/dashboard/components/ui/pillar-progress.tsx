@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils/utils";
-import { Pillar } from "@/src/types/dashboard";
+import { Pillar } from "@/types/dashboard";
 
 interface PillarProgressProps {
 	pillars: Pillar[];

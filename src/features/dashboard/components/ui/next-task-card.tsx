@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils/utils";
-import { DailyTask } from "@/src/types/dashboard";
+import { DailyTask } from "@/types/dashboard";
 import { ArrowRight, CheckCircle2, Lock } from "lucide-react";
 
 interface NextTaskCardProps {

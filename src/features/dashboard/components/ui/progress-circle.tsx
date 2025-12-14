@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserStats } from "@/src/types/dashboard";
+import { UserStats } from "@/types/dashboard";
 
 interface ProgressCircleProps {
 	stats: UserStats;
