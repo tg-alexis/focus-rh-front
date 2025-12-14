@@ -1,9 +1,10 @@
 "use client";
 
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DashboardLayout } from "@/src/components/layout/dashboard-layout";
-import { mockDashboardData } from "@/src/lib/mock-data";
+import { mockDashboardData } from "@/lib/mock-data";
+
 import { ArrowRight, Calendar, CheckCircle2, Clock, Lock } from "lucide-react";
 
 export default function DailyTaskPage() {

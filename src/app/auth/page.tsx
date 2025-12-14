@@ -1,4 +1,4 @@
-import Auth from "@/src/features/auth/components/organims/auth";
+import Auth from "@/features/auth/components/organims/auth";
 
 const AuthPage = () => {
 	return (

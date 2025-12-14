@@ -1,4 +1,4 @@
-import { DashboardData, PillarDetail } from "@/src/types/dashboard";
+import { DashboardData, PillarDetail } from "@/types/dashboard";
 
 // Données mock pour le dashboard
 export const mockDashboardData: DashboardData = {

@@ -1,14 +1,22 @@
 "use client";
 
+import { GamificationPanel } from "@/components/dashboard/gamification-panel";
+import { NextTaskCard } from "@/components/dashboard/next-task-card";
+import { PillarProgress } from "@/components/dashboard/pillar-progress";
+import { ProgressCircle } from "@/components/dashboard/progress-circle";
+import { StatsCard } from "@/components/dashboard/stats-card";
+import { WeeklyCalendar } from "@/components/dashboard/weekly-calendar";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
-import { GamificationPanel } from "@/src/components/dashboard/gamification-panel";
-import { NextTaskCard } from "@/src/components/dashboard/next-task-card";
-import { PillarProgress } from "@/src/components/dashboard/pillar-progress";
-import { ProgressCircle } from "@/src/components/dashboard/progress-circle";
-import { StatsCard } from "@/src/components/dashboard/stats-card";
-import { WeeklyCalendar } from "@/src/components/dashboard/weekly-calendar";
-import { DashboardLayout } from "@/src/components/layout/dashboard-layout";
-import { mockDashboardData } from "@/src/lib/mock-data";
+import { mockDashboardData } from "@/lib/mock-data";
+// import { GamificationPanel } from "@/src/components/dashboard/gamification-panel";
+// import { NextTaskCard } from "@/src/components/dashboard/next-task-card";
+// import { PillarProgress } from "@/src/components/dashboard/pillar-progress";
+// import { ProgressCircle } from "@/src/components/dashboard/progress-circle";
+// import { StatsCard } from "@/src/components/dashboard/stats-card";
+// import { WeeklyCalendar } from "@/src/components/dashboard/weekly-calendar";
+// import { DashboardLayout } from "@/src/components/layout/dashboard-layout";
+// import { mockDashboardData } from "@/src/lib/mock-data";
 import { Calendar, Flame, Target, TrendingUp } from "lucide-react";
 
 export default function Home() {

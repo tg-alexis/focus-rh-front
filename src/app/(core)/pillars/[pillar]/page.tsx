@@ -1,14 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DashboardLayout } from "@/src/components/layout/dashboard-layout";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import {
 	PillarHeader,
 	PillarStats,
 	TaskList,
 	WeeklyProgress,
-} from "@/src/components/pillars";
-import { getPillarDetails, mockDashboardData } from "@/src/lib/mock-data";
+} from "@/components/pillars";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getPillarDetails, mockDashboardData } from "@/lib/mock-data";
+
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";

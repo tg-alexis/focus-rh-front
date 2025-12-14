@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { Badge, UserStats } from "@/src/types/dashboard";
 import { Award, Flame, Star, Trophy } from "lucide-react";
 
