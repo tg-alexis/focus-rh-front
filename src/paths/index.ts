@@ -10,8 +10,8 @@ export const paths = {
       auth: {
             root: ROOTS.AUTH,
             login: `${ROOTS.AUTH}`,
-            forgetPasseword: `${ROOTS.AUTH}/forget-password`,
-            resetPassword: `${ROOTS.AUTH}/reset-password`
+            forgetPassword: `${ROOTS.AUTH}/forget-password`,
+            resetPassword: `${ROOTS.AUTH}/confirm-password`
       },
 
       //Core of the application

@@ -28,17 +28,18 @@ export const RequestPasswordResetSchema = z.object({
 });
 
 export const ResetPasswordSchema = z.object({
-  token: z.string().min(1, 'Token requis'),
+  email: z.email('Votre email est requis'),
+  otpCode: z.string().min(1, 'Code OTP requis'),
   newPassword: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
 });
 
 export const RequestOtpSchema = z.object({
-  email: z.string().email('Email invalide'),
+  email: z.email('Email invalide'),
   password: z.string().min(1, 'Mot de passe requis'),
 });
 
 export const ChangePasswordWithOtpSchema = z.object({
-  email: z.string().email('Email invalide'),
+  email: z.email('Email invalide'),
   otpCode: z.string().length(6, 'Le code OTP doit contenir 6 chiffres'),
   newPassword: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
 });

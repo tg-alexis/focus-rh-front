@@ -29,7 +29,8 @@ const ConfirmPasswordPage = () => {
 	const form = useForm<ResetPasswordDto>({
 		resolver: zodResolver(ResetPasswordSchema),
 		defaultValues: {
-			token: "",
+			email: "",
+			otpCode: "",
 			newPassword: "",
 		},
 	});
@@ -65,15 +66,50 @@ const ConfirmPasswordPage = () => {
 					<FieldSet>
 						<FieldGroup>
 							<Field>
+								<FieldLabel htmlFor="email">Email</FieldLabel>
+								<Input
+									id="email"
+									type="email"
+									{...form.register("email")}
+									placeholder="votre@email.com"
+									className="h-11"
+								/>
+
+								{form.formState.errors.email && (
+									<FieldError className="text-destructive text-sm">
+										{form.formState.errors.email.message}
+									</FieldError>
+								)}
+							</Field>
+
+							<Field>
+								<FieldLabel htmlFor="otpCode">Code OTP</FieldLabel>
+
+								<Input
+									id="otpCode"
+									type="text"
+									{...form.register("otpCode")}
+									placeholder="00000"
+									className="h-11"
+								/>
+
+								{form.formState.errors.otpCode && (
+									<FieldError>
+										{form.formState.errors.otpCode.message}
+									</FieldError>
+								)}
+							</Field>
+
+							<Field>
 								<FieldLabel htmlFor="newPassword">
 									Nouveau mot de passe
 								</FieldLabel>
 								<div className="relative">
 									<Input
 										id="newPassword"
-										type="password"
+										type={showPassword ? "text" : "password"}
 										{...form.register("newPassword")}
-										placeholder="nom@exemple.com"
+										placeholder="......"
 										className="h-11"
 									/>
 									<button

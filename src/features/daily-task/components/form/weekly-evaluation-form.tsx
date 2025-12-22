@@ -13,7 +13,6 @@ import {
 	Field,
 	FieldContent,
 	FieldDescription,
-	FieldError,
 	FieldGroup,
 	FieldLabel,
 } from "@/components/ui/field";
@@ -80,20 +79,17 @@ export const WeeklyEvaluationForm = ({
 	onSuccess,
 }: WeeklyEvaluationFormProps) => {
 	const [scoreValues, setScoreValues] = useState<Record<string, number>>({});
+	const [textValues, setTextValues] = useState<Record<string, string>>({
+		learned: "",
+		deep: "",
+		improve: "",
+	});
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-	} = useForm<WeeklyEvaluationFormData>({
+	const { handleSubmit, reset } = useForm<WeeklyEvaluationFormData>({
 		resolver: zodResolver(weeklyEvaluationSchema),
 		defaultValues: {
 			weekNumber,
 			answers: [],
-			learned: "",
-			deep: "",
-			improve: "",
 		},
 	});
 
@@ -104,6 +100,7 @@ export const WeeklyEvaluationForm = ({
 			toast.success("Évaluation soumise avec succès !");
 			reset();
 			setScoreValues({});
+			setTextValues({ learned: "", deep: "", improve: "" });
 			onSuccess?.();
 		},
 		onError: (error) => {
@@ -118,6 +115,7 @@ export const WeeklyEvaluationForm = ({
 	const onSubmit = (data: WeeklyEvaluationFormData) => {
 		console.log("📝 Formulaire soumis avec les données:", data);
 		console.log("📊 Valeurs des scores:", scoreValues);
+		console.log("📝 Valeurs des textes:", textValues);
 
 		const answers = EVALUATION_QUESTIONS.map((q) => {
 			let value: string | number;
@@ -125,16 +123,7 @@ export const WeeklyEvaluationForm = ({
 			if (q.type === "score") {
 				value = scoreValues[q.id] || 0;
 			} else {
-				// Access text fields safely
-				const textValue =
-					q.id === "learned"
-						? data.learned
-						: q.id === "deep"
-						? data.deep
-						: q.id === "improve"
-						? data.improve
-						: "";
-				value = textValue || "";
+				value = textValues[q.id] || "";
 			}
 
 			return {
@@ -160,9 +149,6 @@ export const WeeklyEvaluationForm = ({
 			weekNumber,
 			answers,
 			textAnswers: textAnswers.length > 0 ? textAnswers : undefined,
-			learned: data.learned || "",
-			deep: data.deep || "",
-			improve: data.improve || "",
 		};
 
 		console.log("🚀 Envoi du payload:", payload);
@@ -259,17 +245,16 @@ export const WeeklyEvaluationForm = ({
 										<FieldContent>
 											<textarea
 												id={question.id}
-												{...register(
-													question.id as "learned" | "deep" | "improve"
-												)}
+												value={textValues[question.id] || ""}
+												onChange={(e) =>
+													setTextValues((prev) => ({
+														...prev,
+														[question.id]: e.target.value,
+													}))
+												}
 												placeholder={question.placeholder}
 												rows={3}
 												className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-											/>
-											<FieldError
-												errors={[
-													errors[question.id as "learned" | "deep" | "improve"],
-												]}
 											/>
 										</FieldContent>
 									</Field>

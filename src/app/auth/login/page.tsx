@@ -1,6 +1,8 @@
 "use client";
 
 import { useLogin } from "@/features/auth/hooks/useAuth";
+import { paths } from "@/paths";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -89,12 +91,12 @@ export default function LoginPage() {
 					</div>
 
 					<div className="text-center">
-						<a
-							href="/auth/forgot-password"
+						<Link
+							href={paths.auth.forgetPassword}
 							className="text-sm text-blue-600 hover:text-blue-500"
 						>
 							Mot de passe oublié ?
-						</a>
+						</Link>
 					</div>
 				</form>
 			</div>

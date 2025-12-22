@@ -18,10 +18,6 @@ export const weeklyEvaluationSchema = z.object({
 			value: z.string().min(1, "Cette réponse est requise"),
 		})
 	).optional(),
-	// Dynamic text fields for individual questions
-	learned: z.string(),
-	deep: z.string(),
-	improve: z.string(),
 });
 
 export type WeeklyEvaluationFormData = z.infer<typeof weeklyEvaluationSchema>;

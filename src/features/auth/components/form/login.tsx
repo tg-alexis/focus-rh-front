@@ -108,7 +108,7 @@ export const LoginForm = () => {
 			<div className="text-center pt-8">
 				<span className="text-sm">Vous avez oublié votre mot de passe ? </span>
 				<Link
-					href={paths.auth.forgetPasseword}
+					href={paths.auth.forgetPassword}
 					className="text-sm hover:text-blue-500 font-semibold"
 				>
 					Mot de passe oublié

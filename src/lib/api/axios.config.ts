@@ -2,7 +2,13 @@ import { paths } from '@/paths';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://focus-rh-api.amicale-solidarite.ovh/api/v1';
+// // Utiliser le proxy Next.js pour éviter les problèmes CORS
+// const API_BASE_URL = typeof window !== 'undefined' 
+//   ? '/api/proxy' // Côté client : utiliser le proxy Next.js
+//   : process.env.NEXT_PUBLIC_API_URL || 'https://focus-rh-api.amicale-solidarite.ovh/api/v1'; // Côté serveur : appel direct
+
+
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://focus-rh-api.amicale-solidarite.ovh/api/v1'; // Côté serveur : appel direct
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -10,6 +16,7 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 30000,
+  withCredentials: false, // Important pour éviter les problèmes CORS
 });
 
 // Request interceptor pour ajouter le token d'authentification

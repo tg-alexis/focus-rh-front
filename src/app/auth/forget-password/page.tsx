@@ -18,6 +18,7 @@ import { paths } from "@/paths";
 import Logo from "@/shared/components/organims/logo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -29,12 +30,14 @@ const ResetPasswordPage = () => {
 		},
 	});
 
+	const router = useRouter();
+
 	const { mutate: requestPasswordReset, isPending } = useRequestPasswordReset();
 
 	const Submit = async (data: RequestPasswordResetDto) => {
 		requestPasswordReset(data, {
 			onSuccess: () => {
-				// router.push("/dashboard");
+				router.push(paths.auth.resetPassword);
 
 				toast.success("Mot de passe réinitialisé avec succès");
 			},
