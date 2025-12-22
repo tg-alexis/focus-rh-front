@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils/utils";
-import { PillarDetail } from "@/src/types/dashboard";
+import { PillarDetail } from "@/types/dashboard";
 import { Calendar, CheckCircle2, Circle, Lock } from "lucide-react";
 
 interface WeeklyProgressProps {

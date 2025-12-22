@@ -1,22 +1,22 @@
-export const endpoints_daily_task = {
+export const ENDPOINTS_DAILY_TASK = {
 
-      today: "daily-content/today",
-      day_choose: (day_number: string)=> `daily-content/day/${day_number}`,
-      validate: (day_number: string)=> `daily-content/day/${day_number}/validate`,
+      TODAY: "daily-content/today",
+      DAY_CHOOSE: (day_number: string)=> `daily-content/day/${day_number}/`,
+      VALIDATE: (day_number: string)=> `daily-content/day/${day_number}/validate/`,
 }
 
 
-export const endpoints_journey = {
+export const ENDPOINTS_JOURNEY = {
 
-      journey_user: "/api/v1/journey/my-journey",
+      JOURNEY_USER: "/api/v1/journey/my-journey/",
 
-      create_journey: "/api/v1/journey",  //Administrateur
-      create_pillars_for_journey: (id: number) => `api/v1/journey/${id}/pillars`,  //Administrateur
-      create_daily_task_for_journey: (id: number) => `api/v1/journey/${id}/daily-content`,  //Administrateur
+      CREATE_JOURNEY: "/api/v1/journey/",  //Administrateur
+      CREATE_PILLARS: (id: number) => `api/v1/journey/${id}/pillars/`,  //Administrateur
+      CREATE_DAILY_TASK: (id: number) => `api/v1/journey/${id}/daily-content/`,  //Administrateur
 
-      assign_journey_to_user: (id: number) => `api/v1/journey/${id}/assign`,  //Administrateur
-      validate_journey: `api/v1/journey/validate-daily`,  
-      more_forward: `api/v1/journey/advance`,
-      weekly_evaluation: `api/v1/journey/weekly-evaluation`,
+      ASSIGN_JOURNEY: (id: number) => `api/v1/journey/${id}/assign/`,  //Administrateur
+      VALIDATE_JOURNEY: `api/v1/journey/validate-daily/`,  
+      MORE_FORWARD: `api/v1/journey/advance/`,
+      WEEKLY_EVALUATION: `api/v1/journey/weekly-evaluation/`,
       
 }

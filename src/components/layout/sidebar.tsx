@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useLogout } from "@/features/auth/hooks/useAuth";
 import { cn } from "@/lib/utils/utils";
 import {
 	BarChart3,
@@ -15,6 +16,7 @@ import {
 	Trophy,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface MenuItem {
@@ -120,6 +122,8 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [expandedItems, setExpandedItems] = useState<string[]>([]);
+	const router = useRouter();
+	const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
 	const toggleExpand = (itemId: string) => {
 		setExpandedItems((prev) =>
@@ -127,6 +131,14 @@ export function Sidebar({ className }: SidebarProps) {
 				? prev.filter((id) => id !== itemId)
 				: [...prev, itemId]
 		);
+	};
+
+	const handleLogout = () => {
+		logout(undefined, {
+			onSuccess: () => {
+				router.push("/auth");
+			},
+		});
 	};
 
 	const renderMenuItem = (item: MenuItem, isChild = false) => {
@@ -250,19 +262,26 @@ export function Sidebar({ className }: SidebarProps) {
 
 				{/* Déconnexion */}
 				<button
+					onClick={handleLogout}
+					disabled={isLoggingOut}
 					className={cn(
 						"flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all w-full group relative",
 						"hover:bg-red-50 hover:text-red-700",
 						"text-gray-700 font-medium",
-						isCollapsed && "justify-center"
+						isCollapsed && "justify-center",
+						isLoggingOut && "opacity-50 cursor-not-allowed"
 					)}
 				>
 					<LogOut className="h-5 w-5 shrink-0" />
-					{!isCollapsed && <span className="flex-1">Déconnexion</span>}
+					{!isCollapsed && (
+						<span className="flex-1">
+							{isLoggingOut ? "Déconnexion..." : "Déconnexion"}
+						</span>
+					)}
 
 					{isCollapsed && (
 						<div className="absolute left-full ml-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 transition-opacity">
-							Déconnexion
+							{isLoggingOut ? "Déconnexion..." : "Déconnexion"}
 						</div>
 					)}
 				</button>

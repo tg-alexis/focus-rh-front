@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils/utils";
-import { PillarTask } from "@/src/types/dashboard";
+import { PillarTask } from "@/types/dashboard";
+
 import { CheckCircle2, Lock, Play } from "lucide-react";
 import { useState } from "react";
 

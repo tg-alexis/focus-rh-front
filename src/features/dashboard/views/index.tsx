@@ -1,3 +1,5 @@
+"use client";
+
 import { DashboardData } from "@/types/dashboard";
 
 import { Button } from "@/components/ui/button";
@@ -8,6 +10,7 @@ import { ProgressCircle } from "@/features/dashboard/components/ui/progress-circ
 import { StatsCard } from "@/features/dashboard/components/ui/stats-card";
 import { WeeklyCalendar } from "@/features/dashboard/components/ui/weekly-calendar";
 import { Calendar, Flame, Target, TrendingUp } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const DashboardView = ({
 	data,
@@ -16,13 +19,21 @@ const DashboardView = ({
 	data: DashboardData;
 	handleStartTask: () => void;
 }) => {
+	// const { data: dailyContent } = useGetDailyContent();
+
+	// console.log(dailyContent);
+
+	const session = useSession();
+
+	const userName = session.data?.user.firstName;
+
 	return (
 		<>
 			<div className="max-w-7xl mx-auto">
 				{/* Titre et message de bienvenue */}
 				<div className="mb-8">
 					<h1 className="text-4xl font-bold text-gray-900 mb-2">
-						Bonjour, {data.user.name.split(" ")[0]} ! 👋
+						Bonjour, {userName || "Utilisateur"} ! 👋
 					</h1>
 					<p className="text-gray-600">
 						Vous êtes au jour {data.currentDay} de votre parcours bien-être.
