@@ -47,22 +47,31 @@ axiosInstance.interceptors.response.use(
       if (typeof window !== 'undefined' && !isRedirecting) {
         isRedirecting = true; // Éviter les redirections multiples
         
+        console.error('401 Unauthorized - Déconnexion en cours...');
+        
         try {
+          // Nettoyer le cache local d'abord
+          localStorage.clear();
+          sessionStorage.clear();
+          
           // Appeler l'API de déconnexion NextAuth
           await fetch('/api/auth/signout', { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
           });
+          
+          // Attendre un peu pour que la déconnexion soit effective
+          await new Promise(resolve => setTimeout(resolve, 100));
         } catch (e) {
           console.error('Erreur lors de la déconnexion:', e);
+        } finally {
+          // Redirection forcée vers la page de login avec rechargement complet
+          window.location.href = paths.auth.root;
+          // Réinitialiser le flag après un délai
+          setTimeout(() => {
+            isRedirecting = false;
+          }, 1000);
         }
-        
-        // Nettoyer le cache local
-        localStorage.clear();
-        sessionStorage.clear();
-        
-        // Redirection forcée vers la page de login avec rechargement complet
-        window.location.replace(paths.auth.root);
       }
     }
     
