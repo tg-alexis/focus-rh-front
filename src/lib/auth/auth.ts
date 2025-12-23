@@ -8,6 +8,20 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://focus-rh-api.am
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  // Configuration des cookies pour la production
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
+  // Activer le debug en développement
+  debug: process.env.NODE_ENV === 'development',
   providers: [
     Credentials({
       credentials: {
@@ -29,7 +43,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             password,
           });
 
-          console.log('Login response:', JSON.stringify(response.data, null, 2));
+          console.log('🔵 Login API Response:', {
+            status: response.status,
+            data: response.data
+          });
 
           // Gérer différentes structures de réponse possibles
           let accessToken: string;
@@ -39,23 +56,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (response.data.accessToken && response.data.refreshToken) {
             accessToken = response.data.accessToken;
             refreshToken = response.data.refreshToken;
+            console.log('✅ Tokens trouvés directement dans response.data');
           }
           // Cas 2: tokens dans response.data.data
           else if (response.data.data?.accessToken && response.data.data?.refreshToken) {
             accessToken = response.data.data.accessToken;
             refreshToken = response.data.data.refreshToken;
+            console.log('✅ Tokens trouvés dans response.data.data');
           }
           // Cas 3: tokens dans response.data.tokens
           else if (response.data.tokens?.accessToken && response.data.tokens?.refreshToken) {
             accessToken = response.data.tokens.accessToken;
             refreshToken = response.data.tokens.refreshToken;
+            console.log('✅ Tokens trouvés dans response.data.tokens');
           }
           else {
-            console.error('Unable to find tokens in response:', response.data);
+            console.error('❌ Impossible de trouver les tokens dans la réponse:', response.data);
             return null;
           }
 
-          console.log('Tokens extracted successfully');
+          console.log('🔵 Récupération des infos utilisateur avec token:', accessToken.substring(0, 20) + '...');
 
           // Récupérer les informations de l'utilisateur
           const userResponse = await axios.get(`${API_BASE_URL}/users/me`, {
@@ -64,12 +84,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
 
-          console.log('User response:', JSON.stringify(userResponse.data, null, 2));
+          console.log('🔵 User API Response:', {
+            status: userResponse.status,
+            data: userResponse.data
+          });
 
           // Gérer différentes structures de réponse utilisateur
           const user = userResponse.data.data || userResponse.data;
 
-          return {
+          const userObject = {
             id: user.id,
             email: user.email,
             firstName: user.firstName,
@@ -78,11 +101,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             accessToken,
             refreshToken,
           };
+
+          console.log('✅ Authentification réussie pour:', user.email);
+          return userObject;
         } catch (error) {
-          console.error('Authentication error:', error);
+          console.error('❌ Erreur d\'authentification:', error);
           if (axios.isAxiosError(error)) {
-            console.error('Response data:', error.response?.data);
-            console.error('Response status:', error.response?.status);
+            console.error('❌ Détails de l\'erreur:', {
+              status: error.response?.status,
+              data: error.response?.data,
+              message: error.message
+            });
           }
           return null;
         }
