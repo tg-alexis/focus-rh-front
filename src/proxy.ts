@@ -6,7 +6,7 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  console.log('🔵 Middleware:', {
+  console.log('🔵 Proxy:', {
     path: nextUrl.pathname,
     isLoggedIn,
     hasAuth: !!req.auth
@@ -22,6 +22,17 @@ export default auth((req) => {
     nextUrl.pathname.startsWith(route)
   );
 
+  // Gérer la page racine AVANT tout
+  if (isRootPage) {
+    if (isLoggedIn) {
+      console.log('🔄 Root: Redirection vers dashboard (connecté)');
+      return NextResponse.redirect(new URL(paths.core.dashboard, nextUrl.origin));
+    } else {
+      console.log('🔄 Root: Redirection vers auth (non connecté)');
+      return NextResponse.redirect(new URL(paths.auth.root, nextUrl.origin));
+    }
+  }
+
   // Si l'utilisateur est connecté et essaie d'accéder à une page d'auth
   if (isLoggedIn && isAuthPage) {
     console.log('🔄 Redirection: auth -> dashboard');
@@ -34,12 +45,6 @@ export default auth((req) => {
     const loginUrl = new URL(paths.auth.root, nextUrl.origin);
     loginUrl.searchParams.set('callbackUrl', nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
-  }
-
-  // Permettre l'accès à la page racine (elle gère sa propre redirection)
-  if (isRootPage) {
-    console.log('✅ Accès autorisé: root page');
-    return NextResponse.next();
   }
 
   console.log('✅ Accès autorisé:', nextUrl.pathname);
