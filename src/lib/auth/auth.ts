@@ -8,6 +8,20 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://focus-rh-api.am
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  // Configuration des cookies pour la production
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
+  // Activer le debug en développement
+  debug: process.env.NODE_ENV === 'development',
   providers: [
     Credentials({
       credentials: {

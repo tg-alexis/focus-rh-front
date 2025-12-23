@@ -1,0 +1,13 @@
+{
+	"buildCommand": "npm run build",
+	"devCommand": "npm run dev",
+	"installCommand": "npm install",
+	"framework": "nextjs",
+	"outputDirectory": ".next",
+	"regions": ["cdg1"],
+	"env": {
+		"NEXTAUTH_SECRET": "@nextauth-secret",
+		"NEXTAUTH_URL": "@nextauth-url",
+		"NEXT_PUBLIC_API_URL": "@next-public-api-url"
+	}
+}
