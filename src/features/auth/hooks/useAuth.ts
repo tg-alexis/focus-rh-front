@@ -1,10 +1,10 @@
 import { authService } from '@/features/auth/api/auth-service';
 import type {
-  ChangePasswordWithOtpDto,
-  LoginDto,
-  RequestOtpDto,
-  RequestPasswordResetDto,
-  ResetPasswordDto,
+    ChangePasswordWithOtpDto,
+    LoginDto,
+    RequestOtpDto,
+    RequestPasswordResetDto,
+    ResetPasswordDto,
 } from '@/features/auth/schema/auth-schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { signIn, signOut } from 'next-auth/react';
@@ -20,24 +20,39 @@ export const AUTH_QUERY_KEYS = {
 export function useLogin() {
   return useMutation({
     mutationFn: async (credentials: LoginDto) => {
+      console.log('🔵 useLogin: Tentative de connexion pour', credentials.email);
+      
       const result = await signIn('credentials', {
         ...credentials,
         redirect: false,
       });
 
+      console.log('🔵 useLogin: Résultat signIn', {
+        ok: result?.ok,
+        error: result?.error,
+        status: result?.status
+      });
+
       if (result?.error) {
+        console.error('❌ useLogin: Erreur de connexion', result.error);
         throw new Error(result.error);
       }
 
+      if (!result?.ok) {
+        console.error('❌ useLogin: Connexion échouée (ok=false)');
+        throw new Error('Échec de la connexion');
+      }
+
+      console.log('✅ useLogin: Connexion réussie');
       return result;
     },
     onSuccess: () => {
+      console.log('✅ useLogin onSuccess: Affichage du toast de succès');
       toast.success('Connexion réussie');
     },
-    onError: () => {
-// error: Error
-      toast.error("Email ou mot de passe incorrect")
-      // toast.error(error.message || 'Échec de la connexion');
+    onError: (error: Error) => {
+      console.error('❌ useLogin onError:', error.message);
+      toast.error("Email ou mot de passe incorrect");
     },
   });
 }
