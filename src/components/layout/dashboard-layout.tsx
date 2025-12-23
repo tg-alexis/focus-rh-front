@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Bell, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { ReactNode } from "react";
 import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
@@ -16,6 +17,10 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
+	const session = useSession();
+
+	const userName = session.data?.user.firstName;
+
 	return (
 		<div className="flex min-h-screen bg-gray-50">
 			{/* Sidebar - Desktop only */}
@@ -46,7 +51,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
 									<div className="flex items-center gap-3">
 										<div className="text-right hidden sm:block">
 											<div className="font-semibold text-gray-900 text-sm">
-												{user.name}
+												{userName || "-"}
 											</div>
 											<div className="text-xs text-gray-500">
 												Niveau {user.level}

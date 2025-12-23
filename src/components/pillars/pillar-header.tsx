@@ -1,8 +1,8 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { PillarDetail } from "@/src/types/dashboard";
+import { cn } from "@/lib/utils/utils";
+import { PillarDetail } from "@/types/dashboard";
 
 interface PillarHeaderProps {
 	pillar: PillarDetail;

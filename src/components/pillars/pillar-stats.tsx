@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { PillarDetail } from "@/src/types/dashboard";
+import { PillarDetail } from "@/types/dashboard";
 import {
 	Award,
 	Calendar,

@@ -1,8 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +22,8 @@ export const RegisterForm = () => {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [acceptTerms, setAcceptTerms] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const router = useRouter();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev) => ({
@@ -67,6 +72,8 @@ export const RegisterForm = () => {
 			toast("Compte créé avec succès");
 			setIsLoading(false);
 		}, 1000);
+
+		router.push("/dashboard");
 	};
 
 	return (
@@ -213,3 +220,36 @@ export const RegisterForm = () => {
 		</form>
 	);
 };
+
+import {
+	Field,
+	FieldDescription,
+	FieldGroup,
+	FieldLabel,
+	FieldSet,
+} from "@/components/ui/field";
+
+export function FieldInput() {
+	return (
+		<div className="w-full max-w-md">
+			<FieldSet>
+				<FieldGroup>
+					<Field>
+						<FieldLabel htmlFor="username">Username</FieldLabel>
+						<Input id="username" type="text" placeholder="Max Leiter" />
+						<FieldDescription>
+							Choose a unique username for your account.
+						</FieldDescription>
+					</Field>
+					<Field>
+						<FieldLabel htmlFor="password">Password</FieldLabel>
+						<FieldDescription>
+							Must be at least 8 characters long.
+						</FieldDescription>
+						<Input id="password" type="password" placeholder="••••••••" />
+					</Field>
+				</FieldGroup>
+			</FieldSet>
+		</div>
+	);
+}
