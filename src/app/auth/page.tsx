@@ -1,6 +1,7 @@
 import Auth from "@/features/auth/components/organims/auth";
 
 const AuthPage = () => {
+	// Athe
 	return (
 		<div>
 			<Auth />
