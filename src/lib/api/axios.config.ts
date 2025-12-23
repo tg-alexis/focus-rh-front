@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
       if (typeof window !== 'undefined' && !isRedirecting) {
         isRedirecting = true; // Éviter les redirections multiples
         
-        console.error('401 Unauthorized - Déconnexion en cours...');
+        console.log('🔴 401 Unauthorized détecté - Déconnexion en cours...');
         
         try {
           // Nettoyer le cache local d'abord
@@ -60,18 +60,19 @@ axiosInstance.interceptors.response.use(
             headers: { 'Content-Type': 'application/json' }
           });
           
-          // Attendre un peu pour que la déconnexion soit effective
-          await new Promise(resolve => setTimeout(resolve, 100));
+          console.log('✅ Déconnexion effectuée');
         } catch (e) {
-          console.error('Erreur lors de la déconnexion:', e);
-        } finally {
-          // Redirection forcée vers la page de login avec rechargement complet
-          window.location.href = paths.auth.root;
-          // Réinitialiser le flag après un délai
-          setTimeout(() => {
-            isRedirecting = false;
-          }, 1000);
+          console.error('❌ Erreur lors de la déconnexion:', e);
         }
+        
+        // Redirection forcée vers la page de login avec rechargement complet
+        console.log('🔄 Redirection vers login...');
+        window.location.href = paths.auth.root;
+        
+        // Réinitialiser le flag après un délai
+        setTimeout(() => {
+          isRedirecting = false;
+        }, 2000);
       }
     }
     
