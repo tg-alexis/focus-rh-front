@@ -8,12 +8,18 @@ export default auth((req) => {
 
   // Pages publiques (auth)
   const isAuthPage = nextUrl.pathname.startsWith('/auth');
+  const isRootPage = nextUrl.pathname === '/';
   
   // Pages protégées (toutes les pages du dossier (core))
-  const protectedRoutes = ['/dashboard', '/daily-task', '/pillars'];
+  const protectedRoutes = ['/dashboard', '/daily-task', '/pillars', '/admin'];
   const isProtectedPage = protectedRoutes.some(route => 
     nextUrl.pathname.startsWith(route)
   );
+
+  // Si l'utilisateur est connecté et essaie d'accéder à une page d'auth
+  if (isLoggedIn && isAuthPage) {
+    return NextResponse.redirect(new URL(paths.core.dashboard, nextUrl.origin));
+  }
 
   // Si l'utilisateur n'est pas connecté et essaie d'accéder à une page protégée
   if (!isLoggedIn && isProtectedPage) {
@@ -22,9 +28,9 @@ export default auth((req) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Si l'utilisateur est connecté et essaie d'accéder à une page d'auth
-  if (isLoggedIn && isAuthPage) {
-    return NextResponse.redirect(new URL(paths.auth.root, nextUrl.origin));
+  // Permettre l'accès à la page racine (elle gère sa propre redirection)
+  if (isRootPage) {
+    return NextResponse.next();
   }
 
   return NextResponse.next();
