@@ -8,15 +8,17 @@ export const ENDPOINTS_DAILY_TASK = {
 
 export const ENDPOINTS_JOURNEY = {
 
-      JOURNEY_USER: "/api/v1/journey/my-journey",
+      JOURNEY_USER: "journey/my-journey",
 
-      CREATE_JOURNEY: "/api/v1/journey",  //Administrateur
-      CREATE_PILLARS: (id: number) => `api/v1/journey/${id}/pillars`,  //Administrateur
-      CREATE_DAILY_TASK: (id: number) => `api/v1/journey/${id}/daily-content`,  //Administrateur
+      JOURNEY_STRUCTURE: "journey/structure",
 
-      ASSIGN_JOURNEY: (id: number) => `api/v1/journey/${id}/assign`,  //Administrateur
-      VALIDATE_JOURNEY: `api/v1/journey/validate-daily`,  
-      MORE_FORWARD: `api/v1/journey/advance`,
-      WEEKLY_EVALUATION: `api/v1/journey/weekly-evaluation`,
+      CREATE_JOURNEY: "journey",  //Administrateur
+      CREATE_PILLARS: (id: number) => `journey/${id}/pillars`,  //Administrateur
+      CREATE_DAILY_TASK: (id: number) => `journey/${id}/daily-content`,  //Administrateur
+
+      ASSIGN_JOURNEY: (id: number) => `journey/${id}/assign`,  //Administrateur
+      VALIDATE_JOURNEY: `journey/validate-daily`,  
+      MORE_FORWARD: `journey/advance`,
+      WEEKLY_EVALUATION: `journey/weekly-evaluation`,
       
 }

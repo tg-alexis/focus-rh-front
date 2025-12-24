@@ -3,7 +3,6 @@
 import { DashboardData } from "@/types/dashboard";
 
 import { Button } from "@/components/ui/button";
-import { useGetDailyContent } from "@/features/daily-task/api/get-daily-content";
 import { GamificationPanel } from "@/features/dashboard/components/ui/gamification-panel";
 import { NextTaskCard } from "@/features/dashboard/components/ui/next-task-card";
 import { PillarProgress } from "@/features/dashboard/components/ui/pillar-progress";
@@ -20,10 +19,6 @@ const DashboardView = ({
 	data: DashboardData;
 	handleStartTask: () => void;
 }) => {
-	const { data: dailyContent } = useGetDailyContent();
-
-	console.log(dailyContent);
-
 	const session = useSession();
 
 	const userName = session.data?.user.firstName;

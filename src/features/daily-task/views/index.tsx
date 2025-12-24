@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DailyTask, DashboardData } from "@/types/dashboard";
 
 import { ArrowRight, Calendar, CheckCircle2, Clock, Lock } from "lucide-react";
+import { useGetDailyContent } from "../api/get-daily-content";
+import { useGetJourneyStructure } from "../api/get-journey-structure";
 
 const DailyTaskView = ({
 	data,
@@ -11,6 +13,14 @@ const DailyTaskView = ({
 	data: DashboardData;
 	task: DailyTask;
 }) => {
+	const { data: journeyStructure } = useGetJourneyStructure();
+
+	console.log(journeyStructure);
+
+	const { data: dailyContent } = useGetDailyContent();
+
+	console.log(dailyContent);
+
 	return (
 		<div>
 			<div className="max-w-4xl mx-auto space-y-6">
@@ -20,7 +30,8 @@ const DailyTaskView = ({
 						Tâche du Jour
 					</h1>
 					<p className="text-gray-600">
-						Jour {task.day} • Semaine {task.week}
+						Jour {dailyContent?.dayNumber || "N/A"} • Semaine{" "}
+						{dailyContent?.weekNumber || "N/A"}
 					</p>
 				</div>
 
@@ -45,11 +56,14 @@ const DailyTaskView = ({
 				{/* Main task card */}
 				<Card>
 					<CardHeader>
-						<CardTitle className="text-2xl">{task.title}</CardTitle>
+						<CardTitle className="text-2xl">
+							{dailyContent?.title || "-"}
+						</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						<p className="text-gray-700 text-lg leading-relaxed">
-							{task.description}
+							{dailyContent?.exerciseDescription ||
+								"Aucune description disponible"}
 						</p>
 
 						{task.locked ? (
@@ -69,12 +83,11 @@ const DailyTaskView = ({
 									<h4 className="font-semibold text-blue-900 mb-2">
 										📝 Instructions
 									</h4>
-									<ol className="space-y-2 text-blue-800 text-sm">
-										<li>1. Trouvez un endroit calme</li>
-										<li>2. Prenez un moment pour réfléchir</li>
-										<li>3. Notez vos réflexions</li>
-										<li>4. Validez votre progression</li>
-									</ol>
+
+									<p className="text-blue-700 mb-3">
+										{dailyContent?.content ||
+											"Suivez les étapes pour compléter cette tâche."}
+									</p>
 								</div>
 
 								{/* Action buttons */}

@@ -1,10 +1,10 @@
 import { authService } from '@/features/auth/api/auth-service';
 import type {
-    ChangePasswordWithOtpDto,
-    LoginDto,
-    RequestOtpDto,
-    RequestPasswordResetDto,
-    ResetPasswordDto,
+  ChangePasswordWithOtpDto,
+  LoginDto,
+  RequestOtpDto,
+  RequestPasswordResetDto,
+  ResetPasswordDto,
 } from '@/features/auth/schema/auth-schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { signIn, signOut } from 'next-auth/react';
@@ -63,6 +63,7 @@ export function useLogin() {
 export function useLogout() {
   const queryClient = useQueryClient();
 
+  
   return useMutation({
     mutationFn: async () => {
       await authService.logout();
