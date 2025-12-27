@@ -30,7 +30,7 @@ export function WeeklyProgress({ pillar }: WeeklyProgressProps) {
 				completedDays: completedInWeek,
 				progress: Math.round((completedInWeek / daysInWeek) * 100),
 				isCompleted: completedInWeek === daysInWeek,
-				isLocked: startDay > pillar.completedDays + 1,
+				isLocked: startDay > pillar.totalDays + 1,
 			};
 		}
 	);
