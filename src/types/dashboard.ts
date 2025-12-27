@@ -6,8 +6,8 @@ export interface Pillar {
 	description: string;
 	color: string;
 	icon: string;
-	progress: number; // 0-100
-	completedDays: number;
+	completionPercentage: number; // 0-100
+	daysCompleted: number;
 	totalDays: number;
 }
 
@@ -26,10 +26,10 @@ export interface DailyTask {
 export interface WeekProgress {
 	weekNumber: number;
 	startDate: Date;
+	pillarCompletion: number;
 	endDate: Date;
-	completedDays: number;
+	daysCompleted: number;
 	totalDays: number;
-	mainPillar: string;
 }
 
 export interface Badge {
@@ -43,15 +43,25 @@ export interface Badge {
 }
 
 export interface UserStats {
+	totalPoints: number;
+	progressPercentage: number;
+	pointsInCurrentLevel: number;
+	pointsToNextLevel: number;
 	totalDays: number;
 	completedDays: number;
 	currentStreak: number;
 	longestStreak: number;
 	completionRate: number; // 0-100
-	points: number;
-	level: number;
+
+	currentLevel: number;
 	startDate: Date;
 	lastActivityDate?: Date;
+}
+
+export interface StreakData {
+	current: number;
+	longest: number;
+	isActive: boolean;
 }
 
 export interface DashboardData {

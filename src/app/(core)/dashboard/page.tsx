@@ -1,25 +1,20 @@
 "use client";
 
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { useGetDashboardContent } from "@/features/dashboard/api/get-dashboard";
 import DashboardView from "@/features/dashboard/views";
-import { mockDashboardData } from "@/lib/mock-data";
 
 export default function Home() {
-	const data = mockDashboardData;
+	const { data: dashboardData } = useGetDashboardContent();
 
 	const handleStartTask = () => {
-		console.log("Démarrage de la tâche:", data.nextTask?.title);
+		console.log("Démarrage de la tâche:", dashboardData?.nextTask?.title);
 		// Navigation vers la page de la tâche
 	};
 
 	return (
-		<DashboardLayout
-			user={{
-				name: data.user.name,
-				level: data.stats.level,
-			}}
-		>
-			<DashboardView data={data} handleStartTask={handleStartTask} />
+		<DashboardLayout>
+			<DashboardView handleStartTask={handleStartTask} />
 		</DashboardLayout>
 	);
 }

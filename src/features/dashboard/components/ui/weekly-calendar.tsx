@@ -15,7 +15,7 @@ export function WeeklyCalendar({
 	currentWeek,
 }: WeeklyCalendarProps) {
 	const getWeekStatus = (week: WeekProgress, isCurrentWeek: boolean) => {
-		const completionRate = (week.completedDays / week.totalDays) * 100;
+		const completionRate = (week.daysCompleted / week.totalDays) * 100;
 
 		if (week.weekNumber > currentWeek) {
 			return { status: "locked", color: "bg-gray-200", icon: Lock };
@@ -79,7 +79,7 @@ export function WeeklyCalendar({
 							const isCurrentWeek = week.weekNumber === currentWeek;
 							const { color, icon: Icon } = getWeekStatus(week, isCurrentWeek);
 							const completionRate =
-								(week.completedDays / week.totalDays) * 100;
+								(week.daysCompleted / week.totalDays) * 100;
 
 							return (
 								<div
@@ -99,7 +99,7 @@ export function WeeklyCalendar({
 									</div>
 
 									{/* Tooltip au survol */}
-									<div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+									<div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50!">
 										<div className="bg-gray-900 text-white text-xs rounded-lg p-3 whitespace-nowrap shadow-xl">
 											<div className="font-bold mb-1">
 												Semaine {week.weekNumber}
@@ -117,7 +117,11 @@ export function WeeklyCalendar({
 											</div>
 											<div className="mt-1">
 												Pilier:{" "}
-												<span className="font-semibold">{week.mainPillar}</span>
+												<span className="font-semibold">
+													{week.pillarCompletion !== undefined
+														? `${week.pillarCompletion}%`
+														: "-"}
+												</span>
 											</div>
 											<div className="mt-1">
 												Progression:{" "}
@@ -126,7 +130,7 @@ export function WeeklyCalendar({
 												</span>
 											</div>
 											<div className="text-gray-300">
-												{week.completedDays}/{week.totalDays} jours
+												{week.daysCompleted}/{week.totalDays} jours
 											</div>
 											<div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
 										</div>
@@ -143,7 +147,7 @@ export function WeeklyCalendar({
 								{
 									weekProgress.filter(
 										(w) =>
-											w.completedDays === w.totalDays &&
+											w.daysCompleted === w.totalDays &&
 											w.weekNumber <= currentWeek
 									).length
 								}

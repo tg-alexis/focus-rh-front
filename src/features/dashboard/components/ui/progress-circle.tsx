@@ -9,7 +9,8 @@ interface ProgressCircleProps {
 
 export function ProgressCircle({ stats }: ProgressCircleProps) {
 	const circumference = 2 * Math.PI * 70;
-	const offset = circumference - (stats.completionRate / 100) * circumference;
+	const offset =
+		circumference - (stats.progressPercentage / 100) * circumference;
 
 	return (
 		<Card className="bg-linear-to-br from-primary-50 to-secondary-50">
@@ -47,7 +48,7 @@ export function ProgressCircle({ stats }: ProgressCircleProps) {
 					</svg>
 					<div className="absolute inset-0 flex flex-col items-center justify-center">
 						<span className="text-5xl font-bold text-gray-900">
-							{stats.completionRate}%
+							{Math.round(stats.progressPercentage || 0)}%
 						</span>
 						<span className="text-sm text-gray-600 mt-1">complété</span>
 					</div>
@@ -55,16 +56,18 @@ export function ProgressCircle({ stats }: ProgressCircleProps) {
 
 				<div className="mt-6 grid grid-cols-2 gap-4 w-full">
 					<div className="text-center p-3 bg-white rounded-lg shadow-sm">
-						<div className="text-2xl font-bold text-primary-500">
-							{stats.completedDays}
+						<div className="text-xl font-bold text-primary-500">
+							{stats.pointsInCurrentLevel || 0}
 						</div>
-						<div className="text-xs text-gray-600">Jours complétés</div>
+						<div className="text-xs text-gray-600">Points actuels</div>
 					</div>
 					<div className="text-center p-3 bg-white rounded-lg shadow-sm">
-						<div className="text-2xl font-bold text-secondary-500">
-							{stats.totalDays - stats.completedDays}
+						<div className="text-xl font-bold text-secondary-500">
+							{stats.pointsToNextLevel || 0}
 						</div>
-						<div className="text-xs text-gray-600">Jours restants</div>
+						<div className="text-xs text-gray-600">
+							points pour le prochain niveau
+						</div>
 					</div>
 				</div>
 			</CardContent>

@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getPillarDetails, mockDashboardData } from "@/lib/mock-data";
+import { getPillarDetails } from "@/lib/mock-data";
 
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -40,15 +40,8 @@ export default async function PillarPage({ params }: PillarPageProps) {
 		notFound();
 	}
 
-	const data = mockDashboardData;
-
 	return (
-		<DashboardLayout
-			user={{
-				name: data.user.name,
-				level: data.stats.level,
-			}}
-		>
+		<DashboardLayout>
 			<div className="max-w-7xl mx-auto space-y-6">
 				{/* Breadcrumb */}
 				<Link

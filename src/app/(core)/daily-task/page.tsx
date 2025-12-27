@@ -12,24 +12,14 @@ export default function DailyTaskPage() {
 
 	if (!task) {
 		return (
-			<DashboardLayout
-				user={{
-					name: data.user.name,
-					level: data.stats.level,
-				}}
-			>
+			<DashboardLayout>
 				<EndTask />
 			</DashboardLayout>
 		);
 	}
 
 	return (
-		<DashboardLayout
-			user={{
-				name: data.user.name,
-				level: data.stats.level,
-			}}
-		>
+		<DashboardLayout>
 			<div className="space-y-8">
 				<DailyTaskView data={data} task={task} />
 

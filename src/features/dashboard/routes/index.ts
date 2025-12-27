@@ -1,7 +1,11 @@
-export const ENDPOINTS_DASBOARD = {
+export const ENDPOINTS_DASHBOARD = {
 
-      TODAY: "daily-content/today",
-      DAY_CHOOSE: (day_number: string)=> `daily-content/day/${day_number}/`,
-      VALIDATE: (day_number: string)=> `daily-content/day/${day_number}/validate/`,
-}
+      CONTENT: "/dashboard",
+      STATS: "/dashboard/stats",
+      GAMIFICATION: "/dashboard/gamification/stats",
+      CALENDAR: "/dashboard/calendar",
+      PILLAR: "/dashboard/pillars",
+      BADGES: "/dashboard/badges",
+      NEXT_STEP: "/dashboard/next-step"
+};
 
